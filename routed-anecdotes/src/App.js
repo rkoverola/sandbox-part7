@@ -8,6 +8,8 @@ import {
   useNavigate,
 } from 'react-router-dom'
 
+import { useField } from './hooks/index'
+
 const Menu = () => {
   const padding = {
     paddingRight: 5
@@ -72,21 +74,21 @@ const Footer = () => (
 const CreateNew = (props) => {
 
   const navigate = useNavigate()
-  const [content, setContent] = useState('')
-  const [author, setAuthor] = useState('')
-  const [info, setInfo] = useState('')
+  const contentField = useField('content')
+  const authorField = useField('author')
+  const infoField = useField('info')
 
 
   const handleSubmit = (e) => {
     console.log('Calling submit')
     e.preventDefault()
     props.addNew({
-      content,
-      author,
-      info,
+      content: contentField.value,
+      author: authorField.value,
+      info: infoField.value,
       votes: 0
     })
-    props.flashNotification(`A new anecdote '${content}' was created! [LIE]`)
+    props.flashNotification(`A new anecdote '${contentField.value}' was created! [LIE]`)
     navigate('/')
   }
 
@@ -96,15 +98,15 @@ const CreateNew = (props) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input name='content' value={content} onChange={(e) => setContent(e.target.value)} />
+          <input { ...contentField } />
         </div>
         <div>
           author
-          <input name='author' value={author} onChange={(e) => setAuthor(e.target.value)} />
+          <input { ...authorField } />
         </div>
         <div>
           url for more info
-          <input name='info' value={info} onChange={(e)=> setInfo(e.target.value)} />
+          <input { ...infoField } />
         </div>
         <button>create</button>
       </form>
