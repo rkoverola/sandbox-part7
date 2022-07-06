@@ -78,6 +78,8 @@ const CreateNew = (props) => {
   const authorField = useField('author')
   const infoField = useField('info')
 
+  console.log('forInputElement', contentField.attributes)
+  console.log('contentField', contentField)
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -103,15 +105,15 @@ const CreateNew = (props) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input { ...contentField } />
+          <input { ...contentField.attributes } />
         </div>
         <div>
           author
-          <input { ...authorField } />
+          <input { ...authorField.attributes } />
         </div>
         <div>
           url for more info
-          <input { ...infoField } />
+          <input { ...infoField.attributes } />
         </div>
         <button type='submit'>create</button>
         <button type='reset' onClick={resetFields} >reset</button>
