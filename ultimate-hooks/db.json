@@ -1,0 +1,54 @@
+{
+  "notes": [
+    {
+      "content": "custom-hooks are great",
+      "id": 1
+    },
+    {
+      "content": "the best featrure ever <3",
+      "id": 2
+    },
+    {
+      "content": "hello",
+      "id": 3
+    },
+    {
+      "content": "hellodull",
+      "id": 4
+    },
+    {
+      "content": "touching grass",
+      "id": 5
+    },
+    {
+      "content": "touching grass again",
+      "id": 6
+    },
+    {
+      "content": "puppyyyy",
+      "id": 7
+    }
+  ],
+  "persons": [
+    {
+      "name": "mluukkai",
+      "number": "040-5483923",
+      "id": 1
+    },
+    {
+      "name": "kaltsoon",
+      "number": "045-2323456",
+      "id": 2
+    },
+    {
+      "name": "esko",
+      "number": "19",
+      "id": 3
+    },
+    {
+      "name": "oishi",
+      "number": "",
+      "id": 4
+    }
+  ]
+}
