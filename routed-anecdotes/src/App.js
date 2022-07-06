@@ -80,7 +80,6 @@ const CreateNew = (props) => {
 
 
   const handleSubmit = (e) => {
-    console.log('Calling submit')
     e.preventDefault()
     props.addNew({
       content: contentField.value,
@@ -90,6 +89,12 @@ const CreateNew = (props) => {
     })
     props.flashNotification(`A new anecdote '${contentField.value}' was created! [LIE]`)
     navigate('/')
+  }
+
+  const resetFields = () => {
+    contentField.reset()
+    authorField.reset()
+    infoField.reset()
   }
 
   return (
@@ -108,7 +113,8 @@ const CreateNew = (props) => {
           url for more info
           <input { ...infoField } />
         </div>
-        <button>create</button>
+        <button type='submit'>create</button>
+        <button type='reset' onClick={resetFields} >reset</button>
       </form>
     </div>
   )
