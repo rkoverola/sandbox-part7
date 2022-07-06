@@ -5,6 +5,7 @@ import {
   Routes,
   Link,
   useMatch,
+  useNavigate,
 } from 'react-router-dom'
 
 const Menu = () => {
@@ -69,12 +70,15 @@ const Footer = () => (
 )
 
 const CreateNew = (props) => {
+
+  const navigate = useNavigate()
   const [content, setContent] = useState('')
   const [author, setAuthor] = useState('')
   const [info, setInfo] = useState('')
 
 
   const handleSubmit = (e) => {
+    console.log('Calling submit')
     e.preventDefault()
     props.addNew({
       content,
@@ -82,6 +86,8 @@ const CreateNew = (props) => {
       info,
       votes: 0
     })
+    props.flashNotification(`A new anecdote '${content}' was created! [LIE]`)
+    navigate('/')
   }
 
   return (
@@ -106,6 +112,10 @@ const CreateNew = (props) => {
   )
 
 }
+
+const Notification = ({notification}) => (
+  <h3>{notification}</h3>
+)
 
 const App = () => {
   const [anecdotes, setAnecdotes] = useState([
@@ -146,6 +156,13 @@ const App = () => {
     setAnecdotes(anecdotes.map(a => a.id === id ? voted : a))
   }
 
+  const flashNotification = (notification) => {
+    setNotification(notification)
+    setTimeout(() => {
+      setNotification('')
+    }, 5000)
+  }
+
   const match = useMatch('/anecdotes/:id')
   const anecdote = match 
     ? anecdoteById(Number(match.params.id))
@@ -155,10 +172,11 @@ const App = () => {
     <div>
       <h1>Software anecdotes</h1>
       <Menu />
+      <Notification notification={notification} />
       <Routes>
         <Route path='/' element={<AnecdoteList anecdotes={anecdotes} />} />
         <Route path='/about' element={<About />} />
-        <Route path='/create' element={<CreateNew addNew={addNew} />} />
+        <Route path='/create' element={<CreateNew addNew={addNew} flashNotification={flashNotification} />} />
         <Route path='/anecdotes/:id' element={<Anecdote anecdote={anecdote} />} />
       </Routes>
       <Footer />
