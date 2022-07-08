@@ -4,6 +4,8 @@ import Togglable from "./components/Togglable";
 import BlogCreationForm from "./components/BlogCreationForm";
 import LoginForm from "./components/LoginForm";
 import NotificationBar from "./components/NotificationBar";
+import { setNotification } from "./reducers/notificationSlice";
+import { useDispatch } from "react-redux";
 
 import blogService from "./services/blogs";
 import loginService from "./services/login";
@@ -13,9 +15,8 @@ const App = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
-  const [notification, setNotification] = useState("");
-  const [notificationType, setNotificationType] = useState("");
   const blogCreationFormRef = useRef();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     async function getData() {
@@ -35,13 +36,16 @@ const App = () => {
   }, []);
 
   const flashNotification = (message, type) => {
-    setNotification(message);
-    setNotificationType(type);
+    const notif = { message, type };
+    console.log("Calling flashNotification with", notif);
+    dispatch(setNotification(notif));
     setTimeout(() => {
-      setNotification("");
-    }, 5000);
-    setTimeout(() => {
-      setNotificationType("");
+      dispatch(
+        setNotification({
+          message: "",
+          type: "Info",
+        })
+      );
     }, 5000);
   };
 
@@ -135,7 +139,7 @@ const App = () => {
     return (
       <div>
         <h2>Log in to the application</h2>
-        <NotificationBar message={notification} type={notificationType} />
+        <NotificationBar />
         <LoginForm
           handleLoginSubmit={handleLoginSubmit}
           handleUsernameChange={handleUsernameChange}
@@ -149,7 +153,7 @@ const App = () => {
   return (
     <div>
       <h2>Blogs</h2>
-      <NotificationBar message={notification} type={notificationType} />
+      <NotificationBar />
       <div>
         {user.name} is logged in
         <button onClick={handleLogout}>Log out</button>
