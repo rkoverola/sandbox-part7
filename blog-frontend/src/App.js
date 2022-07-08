@@ -5,20 +5,24 @@ import BlogCreationForm from "./components/BlogCreationForm";
 import LoginForm from "./components/LoginForm";
 import NotificationBar from "./components/NotificationBar";
 import { setNotification } from "./reducers/notificationSlice";
-import { useDispatch } from "react-redux";
+import { setBlogs } from "./reducers/blogSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
   const blogCreationFormRef = useRef();
+
+  const blogs = useSelector((state) => state.blog);
+  console.log("Got blogs", blogs);
   const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log("Using effect");
     async function getData() {
       const blogs = await blogService.getAll();
       sortByLikesAndSet(blogs);
@@ -125,7 +129,9 @@ const App = () => {
 
   const sortByLikesAndSet = (blogs) => {
     const sorted = blogs.sort((a, b) => b.likes - a.likes);
-    setBlogs(sorted);
+    const action = setBlogs(sorted);
+    console.log("Dispatching setBlogs", action);
+    dispatch(action);
   };
 
   const handleUsernameChange = ({ target }) => {
