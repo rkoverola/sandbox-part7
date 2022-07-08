@@ -1,10 +1,16 @@
-const LoginForm = ({ handleLoginSubmit, handleUsernameChange, handlePasswordChange, username, password }) => {
+const LoginForm = ({
+  handleLoginSubmit,
+  handleUsernameChange,
+  handlePasswordChange,
+  username,
+  password,
+}) => {
   return (
-    <form onSubmit={handleLoginSubmit} >
+    <form onSubmit={handleLoginSubmit}>
       <div>
         Username
         <input
-          type={'text'}
+          type={"text"}
           value={username}
           onChange={handleUsernameChange}
           data-cy="username"
@@ -13,17 +19,17 @@ const LoginForm = ({ handleLoginSubmit, handleUsernameChange, handlePasswordChan
       <div>
         Password
         <input
-          type={'password'}
+          type={"password"}
           value={password}
           onChange={handlePasswordChange}
           data-cy="password"
         />
       </div>
       <div>
-        <button type='submit'>Login</button>
+        <button type="submit">Login</button>
       </div>
     </form>
-  )
-}
+  );
+};
 
-export default LoginForm
+export default LoginForm;

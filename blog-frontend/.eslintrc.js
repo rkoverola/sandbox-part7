@@ -8,7 +8,9 @@ module.exports = {
   },
   "extends": [ 
       "eslint:recommended",
-      "plugin:react/recommended"
+      "plugin:react/recommended",
+      "prettier",
+      "plugin:prettier/recommended"
   ],
   "parserOptions": {
       "ecmaFeatures": {
@@ -18,7 +20,7 @@ module.exports = {
       "sourceType": "module"
   },
   "plugins": [
-      "react", "jest", "cypress"
+      "react", "jest", "cypress", "prettier"
   ],
   "rules": {
       "indent": [
