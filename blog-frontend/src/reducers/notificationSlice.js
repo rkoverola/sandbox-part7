@@ -15,5 +15,20 @@ export const notificationSlice = createSlice({
   },
 });
 
+export const flashNotification = (message, type) => {
+  return async (dispatch) => {
+    const notif = { message, type };
+    dispatch(setNotification(notif));
+    setTimeout(() => {
+      dispatch(
+        setNotification({
+          message: "",
+          type: "Info",
+        })
+      );
+    }, 5000);
+  };
+};
+
 export const { setNotification } = notificationSlice.actions;
 export default notificationSlice.reducer;

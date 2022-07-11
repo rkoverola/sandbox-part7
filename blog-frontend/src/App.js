@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef } from "react";
-import Blog from "./components/Blog";
 import Togglable from "./components/Togglable";
 import BlogCreationForm from "./components/BlogCreationForm";
 import LoginForm from "./components/LoginForm";
 import NotificationBar from "./components/NotificationBar";
-import { setNotification } from "./reducers/notificationSlice";
-import { setBlogs } from "./reducers/blogSlice";
+import BlogList from "./components/BlogList";
+
+import { flashNotification } from "./reducers/notificationSlice";
+import { initializeBlogs, setBlogs } from "./reducers/blogSlice";
 import { setUser } from "./reducers/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -14,6 +15,7 @@ import loginService from "./services/login";
 
 const App = () => {
   // TODO: Move most of this logic to the blogReducer?
+  // TODO: Move functions to reducers too, so they are easy to import to components, use thunk
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const blogCreationFormRef = useRef();
@@ -23,12 +25,8 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    async function getData() {
-      const blogs = await blogService.getAll();
-      sortByLikesAndSet(blogs);
-    }
-    getData();
-  }, []);
+    dispatch(initializeBlogs());
+  }, [dispatch]);
 
   useEffect(() => {
     const existingLoggedUserJson = window.localStorage.getItem("loggedUser");
@@ -38,19 +36,6 @@ const App = () => {
       blogService.setToken(parsedUser.token);
     }
   }, []);
-
-  const flashNotification = (message, type) => {
-    const notif = { message, type };
-    dispatch(setNotification(notif));
-    setTimeout(() => {
-      dispatch(
-        setNotification({
-          message: "",
-          type: "Info",
-        })
-      );
-    }, 5000);
-  };
 
   const handleLogout = () => {
     window.localStorage.removeItem("loggedUser");
@@ -68,7 +53,7 @@ const App = () => {
       setPassword("");
     } catch (error) {
       console.log("Got error", error);
-      flashNotification("Invalid username or password", "Error");
+      dispatch(flashNotification("Invalid username or password", "Error"));
     }
   };
 
@@ -80,11 +65,11 @@ const App = () => {
         console.log("To", blogs);
         sortByLikesAndSet(blogs.concat(addedBlog));
         blogCreationFormRef.current.toggleVisibility();
-        flashNotification("Blog creation successful", "Info");
+        dispatch(flashNotification("Blog creation successful", "Info"));
       })
       .catch((error) => {
         console.log("Got error", error);
-        flashNotification("Blog creation failed", "Error");
+        dispatch(flashNotification("Blog creation failed", "Error"));
       });
   };
 
@@ -95,11 +80,11 @@ const App = () => {
         .remove(blog.id)
         .then(() => {
           sortByLikesAndSet(blogs.filter((b) => b.id !== blog.id));
-          flashNotification("Blog removed successfully", "Info");
+          dispatch(flashNotification("Blog removed successfully", "Info"));
         })
         .catch((error) => {
           console.log("Got error", error);
-          flashNotification("Blog could not be removed", "Error");
+          dispatch(flashNotification("Blog could not be removed", "Error"));
         });
     }
   };
@@ -120,7 +105,7 @@ const App = () => {
       })
       .catch((error) => {
         console.log("Got error", error);
-        flashNotification("Like operation failed", "Error");
+        dispatch(flashNotification("Like operation failed", "Error"));
       });
   };
 
@@ -167,21 +152,14 @@ const App = () => {
           <BlogCreationForm addBlog={addBlog} />
         </Togglable>
       </div>
-      <table>
-        <tbody>
-          {blogs.map((blog) => {
-            return (
-              <Blog
-                key={blog.id}
-                blog={blog}
-                addLike={addLike}
-                removeBlog={removeBlog}
-                currentUser={user}
-              />
-            );
-          })}
-        </tbody>
-      </table>
+      <div>
+        <BlogList
+          blogs={blogs}
+          addLike={addLike}
+          removeBlog={removeBlog}
+          user={user}
+        />
+      </div>
     </div>
   );
 };
