@@ -6,23 +6,23 @@ import LoginForm from "./components/LoginForm";
 import NotificationBar from "./components/NotificationBar";
 import { setNotification } from "./reducers/notificationSlice";
 import { setBlogs } from "./reducers/blogSlice";
+import { setUser } from "./reducers/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 
 const App = () => {
+  // TODO: Move most of this logic to the blogReducer?
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [user, setUser] = useState(null);
   const blogCreationFormRef = useRef();
 
   const blogs = useSelector((state) => state.blog);
-  console.log("Got blogs", blogs);
+  const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("Using effect");
     async function getData() {
       const blogs = await blogService.getAll();
       sortByLikesAndSet(blogs);
@@ -34,14 +34,13 @@ const App = () => {
     const existingLoggedUserJson = window.localStorage.getItem("loggedUser");
     if (existingLoggedUserJson) {
       const parsedUser = JSON.parse(existingLoggedUserJson);
-      setUser(parsedUser);
+      dispatch(setUser(parsedUser));
       blogService.setToken(parsedUser.token);
     }
   }, []);
 
   const flashNotification = (message, type) => {
     const notif = { message, type };
-    console.log("Calling flashNotification with", notif);
     dispatch(setNotification(notif));
     setTimeout(() => {
       dispatch(
@@ -54,19 +53,17 @@ const App = () => {
   };
 
   const handleLogout = () => {
-    console.log("Logging out");
     window.localStorage.removeItem("loggedUser");
-    setUser(null);
+    dispatch(setUser(null));
   };
 
   const handleLoginSubmit = async (event) => {
     event.preventDefault();
     try {
       const user = await loginService.login({ username, password });
-      console.log("Got user", user);
       window.localStorage.setItem("loggedUser", JSON.stringify(user));
       blogService.setToken(user.token);
-      setUser(user);
+      dispatch(setUser(user));
       setUsername("");
       setPassword("");
     } catch (error) {
@@ -171,17 +168,19 @@ const App = () => {
         </Togglable>
       </div>
       <table>
-        {blogs.map((blog) => {
-          return (
-            <Blog
-              key={blog.id}
-              blog={blog}
-              addLike={addLike}
-              removeBlog={removeBlog}
-              currentUser={user}
-            />
-          );
-        })}
+        <tbody>
+          {blogs.map((blog) => {
+            return (
+              <Blog
+                key={blog.id}
+                blog={blog}
+                addLike={addLike}
+                removeBlog={removeBlog}
+                currentUser={user}
+              />
+            );
+          })}
+        </tbody>
       </table>
     </div>
   );
