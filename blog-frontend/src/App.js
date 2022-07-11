@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from "react";
-import Togglable from "./components/Togglable";
-import BlogCreationForm from "./components/BlogCreationForm";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 import LoginForm from "./components/LoginForm";
 import NotificationBar from "./components/NotificationBar";
-import BlogList from "./components/BlogList";
+import Users from "./components/Users";
 
 import { flashNotification } from "./reducers/notificationSlice";
 import { initializeBlogs, setBlogs } from "./reducers/blogSlice";
@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import blogService from "./services/blogs";
 import loginService from "./services/login";
+import BlogPage from "./components/BlogPage";
 
 const App = () => {
   // TODO: Move most of this logic to the blogReducer?
@@ -146,20 +147,22 @@ const App = () => {
         {user.name} is logged in
         <button onClick={handleLogout}>Log out</button>
       </div>
-      <h2>Create new</h2>
-      <div>
-        <Togglable buttonText={"Create new"} ref={blogCreationFormRef}>
-          <BlogCreationForm addBlog={addBlog} />
-        </Togglable>
-      </div>
-      <div>
-        <BlogList
-          blogs={blogs}
-          addLike={addLike}
-          removeBlog={removeBlog}
-          user={user}
-        />
-      </div>
+      <Router>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <BlogPage
+                blogCreationFormRef={blogCreationFormRef}
+                addBlog={addBlog}
+                addLike={addLike}
+                removeBlog={removeBlog}
+              />
+            }
+          />
+          <Route path="/users" element={<Users />} />
+        </Routes>
+      </Router>
     </div>
   );
 };

@@ -1,6 +1,10 @@
+import { useSelector } from "react-redux";
 import Blog from "./Blog";
 
-const BlogList = ({ blogs, addLike, removeBlog, user }) => {
+const BlogList = ({ addLike, removeBlog }) => {
+  const blogs = useSelector((state) => state.blog);
+  const user = useSelector((state) => state.user);
+
   return (
     <table>
       <tbody>
