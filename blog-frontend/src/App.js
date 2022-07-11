@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route, useMatch } from "react-router-dom";
 
 import LoginForm from "./components/LoginForm";
 import NotificationBar from "./components/NotificationBar";
 import Users from "./components/Users";
+import User from "./components/User";
 
 import { flashNotification } from "./reducers/notificationSlice";
 import { initializeBlogs, setBlogs } from "./reducers/blogSlice";
@@ -15,8 +16,6 @@ import loginService from "./services/login";
 import BlogPage from "./components/BlogPage";
 
 const App = () => {
-  // TODO: Move most of this logic to the blogReducer?
-  // TODO: Move functions to reducers too, so they are easy to import to components, use thunk
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const blogCreationFormRef = useRef();
@@ -24,6 +23,10 @@ const App = () => {
   const blogs = useSelector((state) => state.blog);
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
+
+  // TODO: Get users in app to pass to users and user component, or move to store
+  const userMatch = useMatch("/users/:id");
+  const userPageId = userMatch ? userMatch.params.id : null;
 
   useEffect(() => {
     dispatch(initializeBlogs());
@@ -147,22 +150,21 @@ const App = () => {
         {user.name} is logged in
         <button onClick={handleLogout}>Log out</button>
       </div>
-      <Router>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <BlogPage
-                blogCreationFormRef={blogCreationFormRef}
-                addBlog={addBlog}
-                addLike={addLike}
-                removeBlog={removeBlog}
-              />
-            }
-          />
-          <Route path="/users" element={<Users />} />
-        </Routes>
-      </Router>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <BlogPage
+              blogCreationFormRef={blogCreationFormRef}
+              addBlog={addBlog}
+              addLike={addLike}
+              removeBlog={removeBlog}
+            />
+          }
+        />
+        <Route path="/users" element={<Users />} />
+        <Route path="/users/:id" element={<User id={userPageId} />} />
+      </Routes>
     </div>
   );
 };
