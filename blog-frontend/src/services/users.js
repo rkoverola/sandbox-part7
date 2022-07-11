@@ -13,5 +13,5 @@ const get = async (id) => {
   return response.data;
 };
 
-const userService = { getAll };
+const userService = { getAll, get };
 export default userService;

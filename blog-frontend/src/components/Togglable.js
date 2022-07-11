@@ -1,14 +1,14 @@
 import { useState, forwardRef, useImperativeHandle } from "react";
 
 const Togglable = forwardRef((props, ref) => {
-  const [isVisible, setVisible] = useState(false);
+  const [isHidden, setHidden] = useState(true);
 
-  const buttonText = isVisible ? props.buttonText : "Cancel";
+  const buttonText = isHidden ? props.buttonText : "Cancel";
 
-  const contentStyle = isVisible ? { display: "none" } : { display: "" };
+  const contentStyle = isHidden ? { display: "none" } : { display: "" };
 
   const toggleVisibility = () => {
-    setVisible(!isVisible);
+    setHidden(!isHidden);
   };
 
   useImperativeHandle(ref, () => {

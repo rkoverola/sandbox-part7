@@ -5,6 +5,8 @@ import LoginForm from "./components/LoginForm";
 import NotificationBar from "./components/NotificationBar";
 import Users from "./components/Users";
 import User from "./components/User";
+import Blog from "./components/Blog";
+import BlogPage from "./components/BlogPage";
 
 import { flashNotification } from "./reducers/notificationSlice";
 import { initializeBlogs, setBlogs } from "./reducers/blogSlice";
@@ -13,7 +15,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 import blogService from "./services/blogs";
 import loginService from "./services/login";
-import BlogPage from "./components/BlogPage";
 
 const App = () => {
   const [username, setUsername] = useState("");
@@ -24,9 +25,15 @@ const App = () => {
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
-  // TODO: Get users in app to pass to users and user component, or move to store
   const userMatch = useMatch("/users/:id");
   const userPageId = userMatch ? userMatch.params.id : null;
+
+  const blogMatch = useMatch("/blogs/:id");
+  const blog = blogMatch
+    ? blogs.find((b) => b.id === blogMatch.params.id)
+    : null;
+
+  // console.log("Got blog", blog);
 
   useEffect(() => {
     dispatch(initializeBlogs());
@@ -164,6 +171,17 @@ const App = () => {
         />
         <Route path="/users" element={<Users />} />
         <Route path="/users/:id" element={<User id={userPageId} />} />
+        <Route
+          path="blogs/:id"
+          element={
+            <Blog
+              blog={blog}
+              addLike={addLike}
+              removeBlog={removeBlog}
+              currentUser={user}
+            />
+          }
+        />
       </Routes>
     </div>
   );

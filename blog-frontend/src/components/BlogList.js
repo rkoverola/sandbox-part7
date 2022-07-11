@@ -1,22 +1,19 @@
 import { useSelector } from "react-redux";
-import Blog from "./Blog";
+import { Link } from "react-router-dom";
 
-const BlogList = ({ addLike, removeBlog }) => {
+const BlogList = () => {
   const blogs = useSelector((state) => state.blog);
-  const user = useSelector((state) => state.user);
 
   return (
     <table>
       <tbody>
         {blogs.map((blog) => {
           return (
-            <Blog
-              key={blog.id}
-              blog={blog}
-              addLike={addLike}
-              removeBlog={removeBlog}
-              currentUser={user}
-            />
+            <tr key={blog.id}>
+              <td>
+                <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+              </td>
+            </tr>
           );
         })}
       </tbody>
