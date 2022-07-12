@@ -18,7 +18,9 @@ const Blog = ({ blog, addLike, addComment, removeBlog, currentUser }) => {
     addLike(blogObject, blog.id);
   };
 
-  const handleAddCommentClick = () => {
+  const handleAddCommentClick = (event) => {
+    event.preventDefault();
+    console.log("Got value", window.comment.value);
     if ("comments" in blog) {
       const blogObject = {
         user: blog.user.id,
@@ -26,9 +28,10 @@ const Blog = ({ blog, addLike, addComment, removeBlog, currentUser }) => {
         author: blog.author,
         title: blog.title,
         url: blog.url,
-        comments: blog.comments.concat("New comment"),
+        comments: blog.comments.concat(window.comment.value),
       };
       addComment(blogObject, blog.id);
+      window.comment.value = "";
     } else {
       const blogObject = {
         user: blog.user.id,
@@ -36,9 +39,10 @@ const Blog = ({ blog, addLike, addComment, removeBlog, currentUser }) => {
         author: blog.author,
         title: blog.title,
         url: blog.url,
-        comments: [].concat("Init comment"),
+        comments: [].concat(window.comment.value),
       };
       addComment(blogObject, blog.id);
+      window.comment.value = "";
     }
   };
 
@@ -89,7 +93,10 @@ const Blog = ({ blog, addLike, addComment, removeBlog, currentUser }) => {
         </div>
         <div>{addCommentSection()}</div>
         <div>
-          <button onClick={handleAddCommentClick}>Add comment</button>
+          <form onSubmit={handleAddCommentClick}>
+            <input type={"text"} id="comment" required />
+            <button>Add comment</button>
+          </form>
         </div>
       </div>
     </div>
