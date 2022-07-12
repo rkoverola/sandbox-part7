@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Routes, Route, useMatch } from "react-router-dom";
+import { Typography } from "@mui/material";
 
 import LoginForm from "./components/LoginForm";
 import NotificationBar from "./components/NotificationBar";
@@ -65,7 +66,7 @@ const App = () => {
       setPassword("");
     } catch (error) {
       console.log("Got error", error);
-      dispatch(flashNotification("Invalid username or password", "Error"));
+      dispatch(flashNotification("Invalid username or password", "error"));
     }
   };
 
@@ -77,11 +78,11 @@ const App = () => {
         console.log("To", blogs);
         sortByLikesAndSet(blogs.concat(addedBlog));
         blogCreationFormRef.current.toggleVisibility();
-        dispatch(flashNotification("Blog creation successful", "Info"));
+        dispatch(flashNotification("Blog creation successful", "success"));
       })
       .catch((error) => {
         console.log("Got error", error);
-        dispatch(flashNotification("Blog creation failed", "Error"));
+        dispatch(flashNotification("Blog creation failed", "error"));
       });
   };
 
@@ -92,11 +93,11 @@ const App = () => {
         .remove(blog.id)
         .then(() => {
           sortByLikesAndSet(blogs.filter((b) => b.id !== blog.id));
-          dispatch(flashNotification("Blog removed successfully", "Info"));
+          dispatch(flashNotification("Blog removed successfully", "success"));
         })
         .catch((error) => {
           console.log("Got error", error);
-          dispatch(flashNotification("Blog could not be removed", "Error"));
+          dispatch(flashNotification("Blog could not be removed", "error"));
         });
     }
   };
@@ -117,7 +118,7 @@ const App = () => {
       })
       .catch((error) => {
         console.log("Got error", error);
-        dispatch(flashNotification("Like operation failed", "Error"));
+        dispatch(flashNotification("Like operation failed", "error"));
       });
   };
 
@@ -158,7 +159,7 @@ const App = () => {
   if (user === null) {
     return (
       <div>
-        <h2>Log in to the application</h2>
+        <Typography variant="h4">Log into the application</Typography>
         <NotificationBar />
         <LoginForm
           handleLoginSubmit={handleLoginSubmit}
@@ -172,7 +173,7 @@ const App = () => {
   }
   return (
     <div>
-      <h2>Blogs</h2>
+      <Typography variant="h4">Blogs</Typography>
       <NotificationBar />
       <NavBar user={user} handleLogout={handleLogout} />
       <Routes>

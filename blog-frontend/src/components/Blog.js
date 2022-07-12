@@ -1,4 +1,12 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import {
+  Button,
+  TextField,
+  Typography,
+  List,
+  ListItem,
+  Card,
+} from "@mui/material";
 import PropTypes from "prop-types";
 
 const Blog = ({ blog, addLike, addComment, removeBlog, currentUser }) => {
@@ -54,9 +62,9 @@ const Blog = ({ blog, addLike, addComment, removeBlog, currentUser }) => {
   const addRemoveButton = () => {
     if (blog.user.username === currentUser.username) {
       return (
-        <button onClick={handleRemoveClick} className="removeButton">
+        <Button onClick={handleRemoveClick} className="removeButton">
           Remove
-        </button>
+        </Button>
       );
     }
   };
@@ -69,33 +77,45 @@ const Blog = ({ blog, addLike, addComment, removeBlog, currentUser }) => {
     if ("comments" in blog) {
       return (
         <div>
-          <h3>Comments</h3>
-          <ul>
+          <Typography variant="h5">Comments</Typography>
+          <List>
             {blog.comments.map((comment) => {
-              return <li key={generateId()}>{comment}</li>;
+              return <ListItem key={generateId()}>{comment}</ListItem>;
             })}
-          </ul>
+          </List>
         </div>
       );
     }
   };
 
+  // FIXME: Blog objects no longer populated with userinfo, because update stubs them
+  console.log("Blog user is", blog.user);
+
   return (
     <div>
       <div>
-        <h2>{blog.title}</h2>
-        <a href={blog.url}>{blog.url}</a>
-        <div>
-          {blog.likes} likes <button onClick={handleLikeClick}>Like</button>
-        </div>
-        <div>
-          Added by {blog.user.name} {addRemoveButton()}
-        </div>
+        <Card>
+          <Typography variant="h5">{blog.title}</Typography>
+          <Typography variant="body1" component={Link} to={blog.url}>
+            {blog.url}
+          </Typography>
+          <Typography variant="body1">
+            {blog.likes} likes{" "}
+            <Button onClick={handleLikeClick} variant="outlined">
+              Like
+            </Button>
+          </Typography>
+          <Typography variant="body1">
+            Added by {blog.user.name} {addRemoveButton()}
+          </Typography>
+        </Card>
         <div>{addCommentSection()}</div>
         <div>
           <form onSubmit={handleAddCommentClick}>
-            <input type={"text"} id="comment" required />
-            <button>Add comment</button>
+            <TextField type={"text"} id="comment" required />
+            <Button variant="contained" color="primary">
+              Add comment
+            </Button>
           </form>
         </div>
       </div>

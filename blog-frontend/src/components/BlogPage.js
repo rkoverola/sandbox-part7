@@ -1,3 +1,5 @@
+import { Typography } from "@mui/material";
+
 import BlogCreationForm from "./BlogCreationForm";
 import BlogList from "./BlogList";
 import Togglable from "./Togglable";
@@ -5,7 +7,7 @@ import Togglable from "./Togglable";
 const BlogPage = ({ blogCreationFormRef, addBlog, addLike, removeBlog }) => {
   return (
     <div>
-      <h2>Create new</h2>
+      <Typography variant="h4">Create new</Typography>
       <div>
         <Togglable buttonText={"Create new"} ref={blogCreationFormRef}>
           <BlogCreationForm addBlog={addBlog} />

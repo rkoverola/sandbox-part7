@@ -4,7 +4,7 @@ export const notificationSlice = createSlice({
   name: "notification",
   initialState: {
     message: "",
-    type: "Info",
+    type: "none",
   },
   reducers: {
     setNotification: (state, action) => {
@@ -23,7 +23,7 @@ export const flashNotification = (message, type) => {
       dispatch(
         setNotification({
           message: "",
-          type: "Info",
+          type: "none",
         })
       );
     }, 5000);

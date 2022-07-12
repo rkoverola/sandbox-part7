@@ -1,5 +1,14 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import {
+  Table,
+  TableBody,
+  TableRow,
+  TableCell,
+  TableContainer,
+  TableHead,
+  Typography,
+} from "@mui/material";
 import userService from "../services/users";
 
 const Users = () => {
@@ -20,29 +29,27 @@ const Users = () => {
   console.log("Drawing table for", users);
 
   return (
-    <div>
-      <h2>Users</h2>
-      <table>
-        <tbody>
-          <tr>
-            <td></td>
-            <td>
-              <b>Blogs created</b>
-            </td>
-          </tr>
+    <TableContainer>
+      <Typography variant="h4">Users</Typography>
+      <Table>
+        <TableBody>
+          <TableRow>
+            <TableCell></TableCell>
+            <TableCell>Blogs created</TableCell>
+          </TableRow>
           {users.map((user) => {
             return (
-              <tr key={user.name}>
-                <td>
+              <TableRow key={user.name}>
+                <TableCell>
                   <Link to={`/users/${user.id}`}>{user.name}</Link>
-                </td>
-                <td>{user.blogs.length}</td>
-              </tr>
+                </TableCell>
+                <TableCell>{user.blogs.length}</TableCell>
+              </TableRow>
             );
           })}
-        </tbody>
-      </table>
-    </div>
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 };
 

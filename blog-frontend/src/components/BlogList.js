@@ -1,23 +1,24 @@
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { List, ListItem, ListItemButton } from "@mui/material";
 
 const BlogList = () => {
   const blogs = useSelector((state) => state.blog);
 
   return (
-    <table>
-      <tbody>
+    <div>
+      <List>
         {blogs.map((blog) => {
           return (
-            <tr key={blog.id}>
-              <td>
+            <ListItem key={blog.id}>
+              <ListItemButton>
                 <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
-              </td>
-            </tr>
+              </ListItemButton>
+            </ListItem>
           );
         })}
-      </tbody>
-    </table>
+      </List>
+    </div>
   );
 };
 

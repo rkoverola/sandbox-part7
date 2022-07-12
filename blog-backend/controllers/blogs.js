@@ -34,7 +34,7 @@ blogRouter.post("/:id/comments", async (request, response) => {
     request.params.id,
     blogToModify,
     options
-  );
+  ).populate("user");
   response.status(201).json(returnedBlog);
 });
 
