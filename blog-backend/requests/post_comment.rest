@@ -1,0 +1,12 @@
+POST http://localhost:3003/api/blogs/62c82a40549f68b97b48f22c/comments
+Content-Type: application/json
+
+  {
+    "title": "Some blog",
+    "author": "Some guy/gal",
+    "user": "62c6e4688d2b35916847d3ee",
+    "url": "no",
+    "likes": 12,
+    "comments": ["This is a test"],
+    "id": "62c82a40549f68b97b48f22c"
+  },

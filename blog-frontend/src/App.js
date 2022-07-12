@@ -7,6 +7,7 @@ import Users from "./components/Users";
 import User from "./components/User";
 import Blog from "./components/Blog";
 import BlogPage from "./components/BlogPage";
+import NavBar from "./components/NavBar";
 
 import { flashNotification } from "./reducers/notificationSlice";
 import { initializeBlogs, setBlogs } from "./reducers/blogSlice";
@@ -120,6 +121,26 @@ const App = () => {
       });
   };
 
+  const addComment = (blogObject, id) => {
+    console.log("Adding comment to", blogObject);
+    blogService
+      .leaveComment(blogObject, id)
+      .then((updatedBlog) => {
+        console.log("Added, got response", updatedBlog);
+        const blogsCopy = blogs.slice();
+        const replaceIndex = blogsCopy.findIndex((b) => b.id === id);
+        const modifiedBlogs = blogsCopy.fill(
+          updatedBlog,
+          replaceIndex,
+          replaceIndex + 1
+        );
+        sortByLikesAndSet(modifiedBlogs);
+      })
+      .catch((error) => {
+        console.log("Got error");
+      });
+  };
+
   const sortByLikesAndSet = (blogs) => {
     const sorted = blogs.sort((a, b) => b.likes - a.likes);
     const action = setBlogs(sorted);
@@ -153,10 +174,7 @@ const App = () => {
     <div>
       <h2>Blogs</h2>
       <NotificationBar />
-      <div>
-        {user.name} is logged in
-        <button onClick={handleLogout}>Log out</button>
-      </div>
+      <NavBar user={user} handleLogout={handleLogout} />
       <Routes>
         <Route
           path="/"
@@ -177,6 +195,7 @@ const App = () => {
             <Blog
               blog={blog}
               addLike={addLike}
+              addComment={addComment}
               removeBlog={removeBlog}
               currentUser={user}
             />
