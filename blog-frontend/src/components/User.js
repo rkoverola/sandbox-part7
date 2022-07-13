@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import userService from "../services/users";
-import { Typography, List, ListItem } from "@mui/material";
+import { Typography, List, ListItem, Box } from "@mui/material";
 
 const User = (id) => {
   const [user, setUser] = useState(null);
@@ -26,8 +26,12 @@ const User = (id) => {
   }
   return (
     <div>
-      <Typography variant="h4">{user.name}</Typography>
-      <Typography variant="h5">Added blogs:</Typography>
+      <Box sx={{ p: 1 }}>
+        <Typography variant="h4">{user.name}</Typography>
+      </Box>
+      <Box sx={{ p: 1 }}>
+        <Typography variant="h5">Added blogs:</Typography>
+      </Box>
       <List>
         {user.blogs.map((b) => {
           return <ListItem key={b.id}>{b.title}</ListItem>;

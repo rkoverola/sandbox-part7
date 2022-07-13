@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Routes, Route, useMatch } from "react-router-dom";
-import { Typography } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 
 import LoginForm from "./components/LoginForm";
 import NotificationBar from "./components/NotificationBar";
@@ -138,7 +138,7 @@ const App = () => {
         sortByLikesAndSet(modifiedBlogs);
       })
       .catch((error) => {
-        console.log("Got error");
+        console.log("Got error", error);
       });
   };
 
@@ -159,7 +159,9 @@ const App = () => {
   if (user === null) {
     return (
       <div>
-        <Typography variant="h4">Log into the application</Typography>
+        <Box sx={{ p: 1 }}>
+          <Typography variant="h4">Log into the application</Typography>
+        </Box>
         <NotificationBar />
         <LoginForm
           handleLoginSubmit={handleLoginSubmit}
@@ -173,7 +175,9 @@ const App = () => {
   }
   return (
     <div>
-      <Typography variant="h4">Blogs</Typography>
+      <Box sx={{ p: 1 }}>
+        <Typography variant="h4">Blogs</Typography>
+      </Box>
       <NotificationBar />
       <NavBar user={user} handleLogout={handleLogout} />
       <Routes>

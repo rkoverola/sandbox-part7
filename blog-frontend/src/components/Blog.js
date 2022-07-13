@@ -6,6 +6,9 @@ import {
   List,
   ListItem,
   Card,
+  CardContent,
+  CardActions,
+  Box,
 } from "@mui/material";
 import PropTypes from "prop-types";
 
@@ -77,7 +80,9 @@ const Blog = ({ blog, addLike, addComment, removeBlog, currentUser }) => {
     if ("comments" in blog) {
       return (
         <div>
-          <Typography variant="h5">Comments</Typography>
+          <Box sx={{ p: 1 }}>
+            <Typography variant="h5">Comments</Typography>
+          </Box>
           <List>
             {blog.comments.map((comment) => {
               return <ListItem key={generateId()}>{comment}</ListItem>;
@@ -88,26 +93,24 @@ const Blog = ({ blog, addLike, addComment, removeBlog, currentUser }) => {
     }
   };
 
-  // FIXME: Blog objects no longer populated with userinfo, because update stubs them
-  console.log("Blog user is", blog.user);
-
   return (
     <div>
       <div>
-        <Card>
-          <Typography variant="h5">{blog.title}</Typography>
-          <Typography variant="body1" component={Link} to={blog.url}>
-            {blog.url}
-          </Typography>
-          <Typography variant="body1">
-            {blog.likes} likes{" "}
-            <Button onClick={handleLikeClick} variant="outlined">
+        <Card variant="outlined">
+          <CardContent>
+            <Typography variant="h6">{blog.title}</Typography>
+            <Typography variant="body1" component={Link} to={blog.url}>
+              {blog.url}
+            </Typography>
+            <Typography variant="body1">{blog.likes} likes </Typography>
+            <Typography variant="body1">Added by {blog.user.name}</Typography>
+          </CardContent>
+          <CardActions>
+            <Button onClick={handleLikeClick} variant="outlined" size="small">
               Like
             </Button>
-          </Typography>
-          <Typography variant="body1">
-            Added by {blog.user.name} {addRemoveButton()}
-          </Typography>
+            {addRemoveButton()}
+          </CardActions>
         </Card>
         <div>{addCommentSection()}</div>
         <div>

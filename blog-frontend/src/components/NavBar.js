@@ -1,17 +1,7 @@
 import { Link } from "react-router-dom";
-import {
-  AppBar,
-  Button,
-  IconButton,
-  Toolbar,
-  Typography,
-  Box,
-} from "@mui/material";
+import { AppBar, Button, Toolbar, Typography, Box } from "@mui/material";
 
 const NavBar = ({ user, handleLogout }) => {
-  const padding = {
-    paddingRight: 5,
-  };
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -26,7 +16,12 @@ const NavBar = ({ user, handleLogout }) => {
             Logout
           </Button>
 
-          <Typography variant="h6" component="div" align="right"></Typography>
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{ flexGrow: 1 }}
+          ></Typography>
+
           <a>{user.name} is logged in </a>
         </Toolbar>
       </AppBar>

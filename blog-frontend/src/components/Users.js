@@ -6,8 +6,8 @@ import {
   TableRow,
   TableCell,
   TableContainer,
-  TableHead,
   Typography,
+  Box,
 } from "@mui/material";
 import userService from "../services/users";
 
@@ -30,7 +30,9 @@ const Users = () => {
 
   return (
     <TableContainer>
-      <Typography variant="h4">Users</Typography>
+      <Box sx={{ p: 1 }}>
+        <Typography variant="h4">Users</Typography>
+      </Box>
       <Table>
         <TableBody>
           <TableRow>
